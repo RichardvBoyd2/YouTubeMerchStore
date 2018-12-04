@@ -22,20 +22,21 @@ namespace MerchStore
 
         }
 
-        List<Shirt> shirts = new List<Shirt>();
-        
+        InventoryManager InventoryManager = new InventoryManager();
 
+        //Create Button
         private void button1_Click(object sender, EventArgs e)
         {
-            shirts.Add(new Shirt());
-            shirts.Last().Design = textBox1.Text;
-            shirts.Last().LongSleeve = checkBox1.Checked;
-            shirts.Last().Size = textBox2.Text;
-            shirts.Last().Color = textBox3.Text;
+            String Design = textBox1.Text;
+            Boolean LongSleeve = checkBox1.Checked;
+            String Size = textBox2.Text;
+            String Color = textBox3.Text;
+            int Quantity = 0;
+            decimal Price = 0;
 
             if (Int32.TryParse(textBox4.Text, out int temp))
             {
-                shirts.Last().Quantity = temp;
+                Quantity = temp;
             }
             else
             {
@@ -44,25 +45,29 @@ namespace MerchStore
 
             try
             {
-                shirts.Last().Price = decimal.Parse(textBox5.Text);
+                Price = decimal.Parse(textBox5.Text);
             }       
             catch (System.FormatException)
             {
                 MessageBox.Show("Enter a valid amount of money for the price");
             }
-            RefreshList();
+            
             textBox1.Text = String.Empty;
             textBox2.Text = String.Empty;
             textBox3.Text = String.Empty;
             textBox4.Text = String.Empty;
             textBox5.Text = String.Empty;
+
+            InventoryManager.AddItem(Design, LongSleeve, Size, Color, Quantity, Price);
+            RefreshList();
         }      
         
+        //Restock Button
         private void button3_Click(object sender, EventArgs e)
         {
             if (Int32.TryParse(textBox6.Text, out int temp))
             {
-                shirts[listBox1.SelectedIndex].AddInventory(temp);
+                InventoryManager.RestockItem(listBox1.SelectedIndex, temp);
             }
             else
             {
@@ -72,18 +77,56 @@ namespace MerchStore
             textBox6.Text = String.Empty;
         }        
 
+        //Remove Button
         private void button2_Click(object sender, EventArgs e)
         {
-            if (Int32.TryParse(textBox6.Text, out int temp))
+            InventoryManager.RemoveItem(listBox1.SelectedIndex);   
+            RefreshList();            
+        }
+
+        //Search by Color
+        private void button5_Click(object sender, EventArgs e)
+        {
+            listBox1.DataSource = null;
+            listBox2.DataSource = null;
+            listBox3.DataSource = null;
+            listBox4.DataSource = null;
+            listBox5.DataSource = null;
+            listBox6.DataSource = null;
+            listBox1.DataSource = InventoryManager.SearchByColor(textBox7.Text);
+            listBox2.DataSource = InventoryManager.SearchByColor(textBox7.Text);
+            listBox3.DataSource = InventoryManager.SearchByColor(textBox7.Text);
+            listBox4.DataSource = InventoryManager.SearchByColor(textBox7.Text);
+            listBox5.DataSource = InventoryManager.SearchByColor(textBox7.Text);
+            listBox6.DataSource = InventoryManager.SearchByColor(textBox7.Text);
+            listBox1.DisplayMember = "Design";
+            listBox2.DisplayMember = "LongSleeve";
+            listBox3.DisplayMember = "Size";
+            listBox4.DisplayMember = "Color";
+            listBox5.DisplayMember = "Quantity";
+            listBox6.DisplayMember = "Price";
+        }
+
+        //Search by Name
+        private void button4_Click(object sender, EventArgs e)
+        {
+            try
             {
-                shirts[listBox1.SelectedIndex].RemoveInventory(temp);
+                listBox1.SelectedIndex = InventoryManager.SearchByName(textBox7.Text);
             }
-            else
+            catch
             {
-                MessageBox.Show("Enter a valid whole number to change the inventory");
-            }            
+                MessageBox.Show("Item could not be found with that name");
+            }
+
+            
+        }
+
+        //Clear Search
+        private void button6_Click(object sender, EventArgs e)
+        {
+            textBox7.Text = "";
             RefreshList();
-            textBox6.Text = String.Empty;
         }
 
         private void RefreshList()
@@ -94,12 +137,12 @@ namespace MerchStore
             listBox4.DataSource = null;
             listBox5.DataSource = null;
             listBox6.DataSource = null;
-            listBox1.DataSource = shirts;
-            listBox2.DataSource = shirts;
-            listBox3.DataSource = shirts;
-            listBox4.DataSource = shirts;
-            listBox5.DataSource = shirts;
-            listBox6.DataSource = shirts;
+            listBox1.DataSource = InventoryManager.GetShirts();
+            listBox2.DataSource = InventoryManager.GetShirts();
+            listBox3.DataSource = InventoryManager.GetShirts();
+            listBox4.DataSource = InventoryManager.GetShirts();
+            listBox5.DataSource = InventoryManager.GetShirts();
+            listBox6.DataSource = InventoryManager.GetShirts();
             listBox1.DisplayMember = "Design";
             listBox2.DisplayMember = "LongSleeve";
             listBox3.DisplayMember = "Size";
@@ -107,5 +150,7 @@ namespace MerchStore
             listBox5.DisplayMember = "Quantity";
             listBox6.DisplayMember = "Price";
         }
+
+        
     }
 }
