@@ -31,22 +31,24 @@ namespace MerchStore
             shirts[index].AddInventory(add);
         }
 
-        public int SearchByName(string search)
+        public List<Shirt> SearchByName(string search)
         {
-            for (int i = 0; i < this.shirts.Capacity; i++)
+            List<Shirt> temp = new List<Shirt>();
+            for (int i = 0; i < shirts.Count; i++)
             {
-                if (search.ToLower() == this.shirts[i].Design.ToLower())
+                Console.WriteLine(i);
+                if (this.shirts[i].Design.ToLower().Contains(search.ToLower()))
                 {
-                    return i;
+                    temp.Add(this.shirts[i]);
                 }
             }
-            return this.shirts.Capacity;
+            return temp;
         }
 
         public List<Shirt> SearchByColor(string color)
         {
             List<Shirt> temp = new List<Shirt>();
-            for (int i = 0; i < this.shirts.Capacity; i++)
+            for (int i = 0; i < shirts.Count; i++)
             {
                 if (color.ToLower() == this.shirts[i].Color.ToLower())
                 {

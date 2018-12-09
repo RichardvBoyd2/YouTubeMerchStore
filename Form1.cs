@@ -110,16 +110,24 @@ namespace MerchStore
         //Search by Name
         private void button4_Click(object sender, EventArgs e)
         {
-            try
-            {
-                listBox1.SelectedIndex = InventoryManager.SearchByName(textBox7.Text);
-            }
-            catch
-            {
-                MessageBox.Show("Item could not be found with that name");
-            }
-
-            
+            listBox1.DataSource = null;
+            listBox2.DataSource = null;
+            listBox3.DataSource = null;
+            listBox4.DataSource = null;
+            listBox5.DataSource = null;
+            listBox6.DataSource = null;
+            listBox1.DataSource = InventoryManager.SearchByName(textBox7.Text);
+            listBox2.DataSource = InventoryManager.SearchByName(textBox7.Text);
+            listBox3.DataSource = InventoryManager.SearchByName(textBox7.Text);
+            listBox4.DataSource = InventoryManager.SearchByName(textBox7.Text);
+            listBox5.DataSource = InventoryManager.SearchByName(textBox7.Text);
+            listBox6.DataSource = InventoryManager.SearchByName(textBox7.Text);
+            listBox1.DisplayMember = "Design";
+            listBox2.DisplayMember = "LongSleeve";
+            listBox3.DisplayMember = "Size";
+            listBox4.DisplayMember = "Color";
+            listBox5.DisplayMember = "Quantity";
+            listBox6.DisplayMember = "Price";
         }
 
         //Clear Search
