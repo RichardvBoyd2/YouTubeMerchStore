@@ -75,7 +75,22 @@ namespace MerchStore
             }
             RefreshList();
             textBox6.Text = String.Empty;
-        }        
+        }
+
+        //Remove Stock Button
+        private void button7_Click(object sender, EventArgs e)
+        {
+            if (Int32.TryParse(textBox6.Text, out int temp))
+            {
+                InventoryManager.DestockItem(listBox1.SelectedIndex, temp);
+            }
+            else
+            {
+                MessageBox.Show("Enter a valid whole number to change the inventory");
+            }
+            RefreshList();
+            textBox6.Text = String.Empty;
+        }
 
         //Remove Button
         private void button2_Click(object sender, EventArgs e)

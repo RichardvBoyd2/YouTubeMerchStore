@@ -31,6 +31,11 @@ namespace MerchStore
             shirts[index].AddInventory(add);
         }
 
+        public void DestockItem(int index, int remove)
+        {
+            shirts[index].RemoveInventory(remove);
+        }
+
         public List<Shirt> SearchByName(string search)
         {
             List<Shirt> temp = new List<Shirt>();
